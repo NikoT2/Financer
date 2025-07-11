@@ -54,13 +54,20 @@ const removeAuthToken = async (): Promise<void> => {
 };
 
 const handleTokenInvalidation = async () => {
-  console.log("Token invalid, clearing auth data...");
-  await removeAuthToken();
+  try {
+    console.log("Token invalid, clearing auth data...");
+    await removeAuthToken();
 
-  queryClient.invalidateQueries({ queryKey: queryKeys.auth.all });
-  queryClient.invalidateQueries({ queryKey: queryKeys.transactions.all });
+    queryClient.setQueryData(["authToken"], null);
 
-  queryClient.clear();
+    queryClient.cancelQueries();
+
+    queryClient.removeQueries({ queryKey: queryKeys.auth.all });
+    queryClient.removeQueries({ queryKey: queryKeys.transactions.all });
+    queryClient.clear();
+  } catch (error) {
+    console.error("Error during token invalidation:", error);
+  }
 };
 
 const apiFetch = async <T>(
@@ -77,7 +84,6 @@ const apiFetch = async <T>(
     ...options,
   };
 
-  // Add auth token if available
   const token = await getAuthToken();
   if (token) {
     config.headers = {
@@ -90,7 +96,6 @@ const apiFetch = async <T>(
     const response = await fetch(url, config);
 
     if (!response.ok) {
-      // Handle token invalidation for auth endpoints
       if (response.status === 401 || response.status === 403) {
         await handleTokenInvalidation();
       }
@@ -114,7 +119,6 @@ export const authAPI = {
       method: "POST",
       body: JSON.stringify(data),
     });
-    await setAuthToken(response.access_token);
     return response;
   },
 
@@ -123,7 +127,6 @@ export const authAPI = {
       method: "POST",
       body: JSON.stringify(data),
     });
-    await setAuthToken(response.access_token);
     return response;
   },
 
@@ -132,9 +135,14 @@ export const authAPI = {
   },
 
   logout: async (): Promise<void> => {
+    queryClient.cancelQueries();
+
     await removeAuthToken();
-    queryClient.invalidateQueries({ queryKey: queryKeys.auth.all });
-    queryClient.invalidateQueries({ queryKey: queryKeys.transactions.all });
+
+    queryClient.setQueryData(["authToken"], null);
+
+    queryClient.removeQueries({ queryKey: queryKeys.auth.all });
+    queryClient.removeQueries({ queryKey: queryKeys.transactions.all });
     queryClient.clear();
   },
 };
