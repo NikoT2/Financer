@@ -50,9 +50,11 @@ export function QuickActions({ onAddTransaction }: QuickActionsProps) {
         onPress={() => handleImportCSV("tbc")}
         disabled={isImporting}
         isLoading={isImporting}
+        backgroundColor="#00ADEE"
       />
       <QuickActionButton
         title="Add BOG Transactions"
+        backgroundColor="#ff5c0a"
         onPress={() => handleImportCSV("bog")}
         disabled={isImporting}
         isLoading={isImporting}

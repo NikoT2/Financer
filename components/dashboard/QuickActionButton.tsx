@@ -6,6 +6,7 @@ interface QuickActionButtonProps {
   onPress: () => void;
   disabled?: boolean;
   isLoading?: boolean;
+  backgroundColor?: string;
 }
 
 export const QuickActionButton = ({
@@ -13,12 +14,13 @@ export const QuickActionButton = ({
   onPress,
   disabled = false,
   isLoading = false,
+  backgroundColor = "#3b82f6",
 }: QuickActionButtonProps) => {
   return (
     <TouchableOpacity
       style={{
         flex: 1,
-        backgroundColor: "#3b82f6",
+        backgroundColor,
         padding: 12,
         borderRadius: 12,
         alignItems: "center",
