@@ -37,14 +37,6 @@ const getAuthToken = async (): Promise<string | null> => {
   }
 };
 
-const setAuthToken = async (token: string): Promise<void> => {
-  try {
-    await AsyncStorage.setItem("authToken", token);
-  } catch (error) {
-    console.error("Error setting auth token:", error);
-  }
-};
-
 const removeAuthToken = async (): Promise<void> => {
   try {
     await AsyncStorage.removeItem("authToken");
