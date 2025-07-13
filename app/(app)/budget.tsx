@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, View } from "react-native";
+import { RefreshControl, ScrollView, View } from "react-native";
 import { queryClient } from "../../api";
 import {
   BudgetSettingsModal,
@@ -68,7 +68,19 @@ export default function Budget() {
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#f8fafc" }}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: "#f8fafc" }}
+      refreshControl={
+        <RefreshControl
+          refreshing={isLoading}
+          onRefresh={() => {
+            queryClient.invalidateQueries({
+              queryKey: ["transactions", "stats"],
+            });
+          }}
+        />
+      }
+    >
       <BudgetHeader onSettingsPress={handleSettingsPress} />
 
       <View style={{ padding: 20 }}>
