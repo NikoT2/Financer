@@ -69,6 +69,13 @@ export default function Dashboard() {
             isLoadingStats ? "..." : `₾${formatCurrency(currentMonth?.income)}`
           }
           subtitle={isLoadingStats ? "" : formatDiff(incomeDiff)}
+          subtitleColor={
+            isLoadingStats || incomeDiff === null
+              ? "#10b981"
+              : incomeDiff > 0
+              ? "#10b981"
+              : "#ef4444"
+          }
         />
         <BalanceCard
           title="Monthly Expenses"
@@ -78,6 +85,13 @@ export default function Dashboard() {
               : `₾${formatCurrency(currentMonth?.expenses)}`
           }
           subtitle={isLoadingStats ? "" : formatDiff(expenseDiff)}
+          subtitleColor={
+            isLoadingStats || expenseDiff === null
+              ? "#10b981"
+              : expenseDiff > 0
+              ? "#ef4444"
+              : "#10b981"
+          }
         />
       </View>
 
