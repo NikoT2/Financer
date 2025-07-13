@@ -354,6 +354,7 @@ export const BudgetSettingsModal: React.FC<BudgetSettingsModalProps> = ({
                       updateCategoryLimit(category, value)
                     }
                     placeholder="Enter limit"
+                    placeholderTextColor="#9ca3af"
                     keyboardType="numeric"
                     returnKeyType="done"
                     autoComplete="off"
