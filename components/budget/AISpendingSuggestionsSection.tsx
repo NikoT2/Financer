@@ -143,6 +143,17 @@ export const AISpendingSuggestionsSection: React.FC<
               gap: 8,
             }}
           >
+            {suggestion.potentialSavings > 0 && (
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: "#10b981",
+                  fontWeight: "600",
+                }}
+              >
+                Save ₾{formatAmount(suggestion.potentialSavings)}
+              </Text>
+            )}
             <View
               style={{
                 backgroundColor: getPriorityColor(suggestion.priority),
@@ -162,17 +173,6 @@ export const AISpendingSuggestionsSection: React.FC<
                 {suggestion.priority}
               </Text>
             </View>
-            {suggestion.potentialSavings > 0 && (
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: "#10b981",
-                  fontWeight: "600",
-                }}
-              >
-                Save ₾{formatAmount(suggestion.potentialSavings)}
-              </Text>
-            )}
           </View>
         </View>
         <Text
