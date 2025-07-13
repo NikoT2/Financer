@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
@@ -17,7 +18,56 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [maskedPassword, setMaskedPassword] = useState("");
+  const [maskedConfirmPassword, setMaskedConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const signUpMutation = useSignUp();
+
+  const handlePasswordChange = (text: string) => {
+    if (text.length < maskedPassword.length) {
+      const newPassword = password.slice(0, text.length);
+      setPassword(newPassword);
+      setMaskedPassword(
+        showPassword ? newPassword : "*".repeat(newPassword.length)
+      );
+    } else {
+      const newChar = text.slice(-1);
+      const newPassword = password + newChar;
+      setPassword(newPassword);
+      setMaskedPassword(
+        showPassword ? newPassword : "*".repeat(newPassword.length)
+      );
+    }
+  };
+
+  const handleConfirmPasswordChange = (text: string) => {
+    if (text.length < maskedConfirmPassword.length) {
+      const newConfirmPassword = confirmPassword.slice(0, text.length);
+      setConfirmPassword(newConfirmPassword);
+      setMaskedConfirmPassword(
+        showPassword
+          ? newConfirmPassword
+          : "*".repeat(newConfirmPassword.length)
+      );
+    } else {
+      const newChar = text.slice(-1);
+      const newConfirmPassword = confirmPassword + newChar;
+      setConfirmPassword(newConfirmPassword);
+      setMaskedConfirmPassword(
+        showPassword
+          ? newConfirmPassword
+          : "*".repeat(newConfirmPassword.length)
+      );
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+    setMaskedPassword(showPassword ? "*".repeat(password.length) : password);
+    setMaskedConfirmPassword(
+      showPassword ? "*".repeat(confirmPassword.length) : confirmPassword
+    );
+  };
 
   const handleRegister = async () => {
     if (!name || !email || !password || !confirmPassword) {
@@ -162,24 +212,42 @@ export default function Register() {
             >
               Password
             </Text>
-            <TextInput
+            <View
               style={{
+                flexDirection: "row",
+                alignItems: "center",
                 backgroundColor: "#ffffff",
                 borderWidth: 1,
                 borderColor: "#d1d5db",
                 borderRadius: 12,
                 paddingHorizontal: 16,
                 paddingVertical: 14,
-                fontSize: 16,
-                color: "#1f2937",
               }}
-              value={password}
-              onChangeText={setPassword}
-              placeholderTextColor="#9ca3af"
-              placeholder="Create a password"
-              secureTextEntry
-              autoCapitalize="none"
-            />
+            >
+              <TextInput
+                style={{
+                  flex: 1,
+                  fontSize: 16,
+                  color: "#1f2937",
+                }}
+                value={maskedPassword}
+                onChangeText={handlePasswordChange}
+                placeholderTextColor="#9ca3af"
+                placeholder="Create a password"
+                autoCorrect={false}
+                autoCapitalize="none"
+              />
+              <TouchableOpacity
+                onPress={togglePasswordVisibility}
+                style={{ marginLeft: 10 }}
+              >
+                <Ionicons
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={20}
+                  color="#6b7280"
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={{ marginBottom: 20 }}>
@@ -204,11 +272,11 @@ export default function Register() {
                 fontSize: 16,
                 color: "#1f2937",
               }}
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
+              value={maskedConfirmPassword}
+              onChangeText={handleConfirmPasswordChange}
               placeholderTextColor="#9ca3af"
               placeholder="Confirm your password"
-              secureTextEntry
+              autoCorrect={false}
               autoCapitalize="none"
             />
           </View>
