@@ -210,6 +210,8 @@ export function AddTransactionModal({
                 backgroundColor: "#f9fafb",
                 color: "#1f2937",
               }}
+              autoComplete="off"
+              textContentType="none"
             />
           </View>
 

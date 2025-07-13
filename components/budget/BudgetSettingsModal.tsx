@@ -201,6 +201,8 @@ export const BudgetSettingsModal: React.FC<BudgetSettingsModalProps> = ({
                   placeholder="Enter monthly budget"
                   keyboardType="numeric"
                   returnKeyType="done"
+                  autoComplete="off"
+                  textContentType="none"
                 />
               </View>
             </View>
@@ -354,6 +356,8 @@ export const BudgetSettingsModal: React.FC<BudgetSettingsModalProps> = ({
                     placeholder="Enter limit"
                     keyboardType="numeric"
                     returnKeyType="done"
+                    autoComplete="off"
+                    textContentType="none"
                   />
                 </View>
               ))}
