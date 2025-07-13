@@ -34,12 +34,29 @@ export const useInfiniteTransactions = () => {
   const { hasToken } = useAuthState();
 
   return useInfiniteQuery<TransactionsResponse, Error>({
-    queryKey: queryKeys.transactions.lists(),
-    queryFn: ({ pageParam }) =>
-      transactionsAPI.getTransactions(Number(pageParam) || 1),
+    queryKey: [...queryKeys.transactions.lists(), "infinite"],
+    queryFn: async ({ pageParam }) => {
+      try {
+        const result = await transactionsAPI.getTransactions(
+          Number(pageParam) || 1
+        );
+        return result;
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+        throw error;
+      }
+    },
     getNextPageParam: (lastPage, allPages) => {
+      if (!lastPage || !allPages) {
+        console.warn("lastPage or allPages is undefined");
+        return undefined;
+      }
       const currentPage = Number(lastPage.page);
       const totalPages = Number(lastPage.totalPages);
+      if (isNaN(currentPage) || isNaN(totalPages)) {
+        console.warn("Invalid page numbers:", { currentPage, totalPages });
+        return undefined;
+      }
       if (currentPage < totalPages) {
         return currentPage + 1;
       }
@@ -48,6 +65,8 @@ export const useInfiniteTransactions = () => {
     initialPageParam: 1,
     staleTime: 2 * 60 * 1000,
     enabled: hasToken,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 };
 
