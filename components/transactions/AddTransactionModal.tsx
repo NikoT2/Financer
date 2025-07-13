@@ -148,25 +148,25 @@ export function AddTransactionModal({
         <View
           style={{
             backgroundColor: "#ffffff",
-            borderRadius: 20,
-            padding: 28,
+            borderRadius: 16,
+            padding: 24,
             width: "100%",
             maxWidth: 340,
             shadowColor: "#000",
             shadowOffset: {
               width: 0,
-              height: 10,
+              height: 4,
             },
-            shadowOpacity: 0.25,
-            shadowRadius: 20,
-            elevation: 10,
+            shadowOpacity: 0.1,
+            shadowRadius: 8,
+            elevation: 5,
           }}
         >
-          <View style={{ marginBottom: 24, alignItems: "center" }}>
+          <View style={{ marginBottom: 20, alignItems: "center" }}>
             <Text
               style={{
-                fontSize: 24,
-                fontWeight: "700",
+                fontSize: 20,
+                fontWeight: "600",
                 color: "#1f2937",
                 marginBottom: 4,
               }}
@@ -184,13 +184,13 @@ export function AddTransactionModal({
             </Text>
           </View>
 
-          <View style={{ marginBottom: 20 }}>
+          <View style={{ marginBottom: 16 }}>
             <Text
               style={{
                 fontSize: 14,
-                fontWeight: "600",
+                fontWeight: "500",
                 color: "#374151",
-                marginBottom: 8,
+                marginBottom: 6,
               }}
             >
               Amount
@@ -201,13 +201,13 @@ export function AddTransactionModal({
               value={amount}
               onChangeText={setAmount}
               style={{
-                borderWidth: 2,
-                borderColor: "#e5e7eb",
-                borderRadius: 12,
-                padding: 16,
-                fontSize: 18,
-                fontWeight: "600",
-                backgroundColor: "#f9fafb",
+                borderWidth: 1,
+                borderColor: "#d1d5db",
+                borderRadius: 8,
+                padding: 12,
+                fontSize: 16,
+                fontWeight: "400",
+                backgroundColor: "#ffffff",
                 color: "#1f2937",
               }}
               autoComplete="off"
@@ -215,13 +215,13 @@ export function AddTransactionModal({
             />
           </View>
 
-          <View style={{ marginBottom: 20 }}>
+          <View style={{ marginBottom: 16 }}>
             <Text
               style={{
                 fontSize: 14,
-                fontWeight: "600",
+                fontWeight: "500",
                 color: "#374151",
-                marginBottom: 8,
+                marginBottom: 6,
               }}
             >
               Type
@@ -230,12 +230,12 @@ export function AddTransactionModal({
               <TouchableOpacity
                 style={{
                   flex: 1,
-                  backgroundColor: type === "expense" ? "#ef4444" : "#f3f4f6",
-                  paddingVertical: 12,
-                  paddingHorizontal: 16,
-                  borderRadius: 12,
-                  borderWidth: 2,
-                  borderColor: type === "expense" ? "#ef4444" : "#e5e7eb",
+                  backgroundColor: type === "expense" ? "#ef4444" : "#ffffff",
+                  paddingVertical: 10,
+                  paddingHorizontal: 12,
+                  borderRadius: 8,
+                  borderWidth: 1,
+                  borderColor: type === "expense" ? "#ef4444" : "#d1d5db",
                 }}
                 onPress={() => setType("expense")}
               >
@@ -243,7 +243,7 @@ export function AddTransactionModal({
                   style={{
                     color: type === "expense" ? "#ffffff" : "#6b7280",
                     textAlign: "center",
-                    fontWeight: "600",
+                    fontWeight: "400",
                     fontSize: 14,
                   }}
                 >
@@ -253,12 +253,12 @@ export function AddTransactionModal({
               <TouchableOpacity
                 style={{
                   flex: 1,
-                  backgroundColor: type === "income" ? "#10b981" : "#f3f4f6",
-                  paddingVertical: 12,
-                  paddingHorizontal: 16,
-                  borderRadius: 12,
-                  borderWidth: 2,
-                  borderColor: type === "income" ? "#10b981" : "#e5e7eb",
+                  backgroundColor: type === "income" ? "#10b981" : "#ffffff",
+                  paddingVertical: 10,
+                  paddingHorizontal: 12,
+                  borderRadius: 8,
+                  borderWidth: 1,
+                  borderColor: type === "income" ? "#10b981" : "#d1d5db",
                 }}
                 onPress={() => setType("income")}
               >
@@ -266,7 +266,7 @@ export function AddTransactionModal({
                   style={{
                     color: type === "income" ? "#ffffff" : "#6b7280",
                     textAlign: "center",
-                    fontWeight: "600",
+                    fontWeight: "400",
                     fontSize: 14,
                   }}
                 >
@@ -276,13 +276,13 @@ export function AddTransactionModal({
             </View>
           </View>
 
-          <View style={{ marginBottom: 28 }}>
+          <View style={{ marginBottom: 20 }}>
             <Text
               style={{
                 fontSize: 14,
-                fontWeight: "600",
+                fontWeight: "500",
                 color: "#374151",
-                marginBottom: 8,
+                marginBottom: 6,
               }}
             >
               Category
@@ -297,27 +297,27 @@ export function AddTransactionModal({
               searchable={false}
               placeholder="Select category"
               style={{
-                borderWidth: 2,
-                borderColor: "#e5e7eb",
-                borderRadius: 12,
-                backgroundColor: "#f9fafb",
-                paddingHorizontal: 16,
-                paddingVertical: 12,
-                minHeight: 48,
+                borderWidth: 1,
+                borderColor: "#d1d5db",
+                borderRadius: 8,
+                backgroundColor: "#ffffff",
+                paddingHorizontal: 12,
+                paddingVertical: 10,
+                minHeight: 44,
               }}
               dropDownContainerStyle={{
-                borderWidth: 2,
-                borderColor: "#e5e7eb",
-                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: "#d1d5db",
+                borderRadius: 8,
                 backgroundColor: "#ffffff",
                 shadowColor: "#000",
                 shadowOffset: {
                   width: 0,
-                  height: 4,
+                  height: 2,
                 },
-                shadowOpacity: 0.1,
-                shadowRadius: 8,
-                elevation: 5,
+                shadowOpacity: 0.05,
+                shadowRadius: 4,
+                elevation: 3,
               }}
               textStyle={{
                 fontSize: 14,
@@ -334,12 +334,12 @@ export function AddTransactionModal({
               onPress={handleClose}
               style={{
                 flex: 1,
-                backgroundColor: "#f3f4f6",
+                backgroundColor: "#ffffff",
                 paddingVertical: 10,
-                paddingHorizontal: 14,
-                borderRadius: 12,
-                borderWidth: 2,
-                borderColor: "#e5e7eb",
+                paddingHorizontal: 12,
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: "#d1d5db",
                 justifyContent: "center",
               }}
               disabled={isLoading}
@@ -348,7 +348,7 @@ export function AddTransactionModal({
                 style={{
                   color: "#6b7280",
                   textAlign: "center",
-                  fontWeight: "600",
+                  fontWeight: "400",
                   fontSize: 14,
                 }}
               >
@@ -361,16 +361,8 @@ export function AddTransactionModal({
                 flex: 1,
                 backgroundColor: isFormValid ? "#3b82f6" : "#d1d5db",
                 paddingVertical: 10,
-                paddingHorizontal: 14,
-                borderRadius: 12,
-                shadowColor: isFormValid ? "#3b82f6" : "transparent",
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowOpacity: 0.3,
-                shadowRadius: 8,
-                elevation: 5,
+                paddingHorizontal: 12,
+                borderRadius: 8,
                 justifyContent: "center",
               }}
               disabled={!isFormValid || isLoading}
@@ -379,7 +371,7 @@ export function AddTransactionModal({
                 style={{
                   color: "#ffffff",
                   textAlign: "center",
-                  fontWeight: "600",
+                  fontWeight: "400",
                   fontSize: 14,
                 }}
               >
