@@ -1,14 +1,15 @@
-# Financer 💰
+# Financer
 
 A modern personal finance management app built with [Expo](https://expo.dev) and React Native. Track your expenses, manage budgets, and gain insights into your financial health.
 
 ## Features
 
-- **📊 Dashboard**: Get a quick overview of your financial status with balance and spending insights
-- **💳 Transactions**: View and manage your transaction history with infinite scrolling
-- **📋 Budget Management**: Set spending limits and track your budget across different categories
-- **👤 User Profile**: Manage your account and personal information
-- **🔐 Authentication**: Secure login and registration system
+- **Dashboard**: Get a quick overview of your financial status with balance and spending insights
+- **Transactions**: View and manage your transaction history with infinite scrolling
+- **Budget Management**: Set spending limits and track your budget across different categories
+- **AI Spending Suggestions**: Get intelligent recommendations and insights to optimize your spending habits and improve financial health
+- **User Profile**: Manage your account and personal information
+- **Authentication**: Secure login and registration system
 
 ## Tech Stack
 
