@@ -48,7 +48,7 @@ export function formatDiff(diff: number | null): string {
   return `${sign}₾${Math.abs(diff).toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  })} this month`;
+  })} vs last month`;
 }
 
 export function getMonthDiff(

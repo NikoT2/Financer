@@ -29,11 +29,7 @@ export const useBudget = () => {
   const budgetData = useMemo((): BudgetData | null => {
     if (!transactionStats || !budgetSettings) return null;
 
-    return createBudgetDataFromStats(
-      transactionStats.totalExpenses,
-      transactionStats.expensesByCategory,
-      budgetSettings
-    );
+    return createBudgetDataFromStats(transactionStats, budgetSettings);
   }, [transactionStats, budgetSettings]);
 
   const budgetSummary = useMemo((): BudgetSummary | null => {

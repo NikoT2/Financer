@@ -129,7 +129,7 @@ export default function Budget() {
               marginBottom: 12,
             }}
           >
-            {formatCurrency(budgetSummary.totalSpent)} spent
+            {formatCurrency(budgetSummary.totalSpent)} spent this month
           </Text>
           <View
             style={{
@@ -174,7 +174,7 @@ export default function Budget() {
             marginBottom: 16,
           }}
         >
-          Budget Categories
+          Current Month Budget Categories
         </Text>
 
         {budgetSummary.categories.length === 0 ? (
@@ -195,8 +195,8 @@ export default function Budget() {
                 textAlign: "center",
               }}
             >
-              No spending categories found. Start making transactions to see
-              your budget breakdown.
+              No spending categories found for this month. Start making
+              transactions to see your budget breakdown.
             </Text>
           </View>
         ) : (

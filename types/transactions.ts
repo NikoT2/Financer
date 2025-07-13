@@ -68,4 +68,11 @@ export interface TransactionsStats {
     expenses: number;
     income: number;
   }[];
+  monthlyTrendsPerCategory: {
+    category: string;
+    trends: {
+      month: string;
+      amount: number;
+    }[];
+  }[];
 }

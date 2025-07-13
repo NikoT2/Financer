@@ -4,10 +4,10 @@ import {
   BudgetData,
   BudgetSettings,
   BudgetSummary,
-  CategoryExpense,
   DEFAULT_CATEGORY_LIMITS,
   DEFAULT_MONTHLY_BUDGET,
 } from "../types/budget";
+import { TransactionsStats } from "../types/transactions";
 
 const BUDGET_SETTINGS_KEY = "budget_settings";
 
@@ -16,6 +16,69 @@ export const formatCurrency = (amount: number): string => {
     style: "currency",
     currency: "GEL",
   }).format(amount);
+};
+
+export const getMostRecentMonth = (
+  monthlyTrendsPerCategory: TransactionsStats["monthlyTrendsPerCategory"]
+): string => {
+  let mostRecentMonth = "";
+
+  monthlyTrendsPerCategory.forEach((categoryData) => {
+    categoryData.trends.forEach((trend) => {
+      if (trend.month > mostRecentMonth) {
+        mostRecentMonth = trend.month;
+      }
+    });
+  });
+
+  return mostRecentMonth;
+};
+
+export const getCurrentMonthSpending = (
+  categoryName: string,
+  monthlyTrendsPerCategory: TransactionsStats["monthlyTrendsPerCategory"],
+  currentMonth: string
+): number => {
+  const categoryData = monthlyTrendsPerCategory.find(
+    (cat) => cat.category === categoryName
+  );
+
+  if (!categoryData) return 0;
+
+  const currentMonthData = categoryData.trends.find(
+    (trend) => trend.month === currentMonth
+  );
+
+  return currentMonthData ? currentMonthData.amount : 0;
+};
+
+export const getLatestMonthForCategory = (
+  categoryName: string,
+  monthlyTrendsPerCategory: TransactionsStats["monthlyTrendsPerCategory"]
+): string => {
+  const categoryData = monthlyTrendsPerCategory.find(
+    (cat) => cat.category === categoryName
+  );
+
+  if (!categoryData || categoryData.trends.length === 0) return "";
+
+  return categoryData.trends.reduce((latest, current) => {
+    return current.month > latest ? current.month : latest;
+  }, categoryData.trends[0].month);
+};
+
+export const filterCurrentMonthCategories = (
+  monthlyTrendsPerCategory: TransactionsStats["monthlyTrendsPerCategory"]
+): TransactionsStats["monthlyTrendsPerCategory"] => {
+  const mostRecentMonth = getMostRecentMonth(monthlyTrendsPerCategory);
+
+  return monthlyTrendsPerCategory.filter((categoryData) => {
+    const latestMonth = getLatestMonthForCategory(
+      categoryData.category,
+      monthlyTrendsPerCategory
+    );
+    return latestMonth === mostRecentMonth;
+  });
 };
 
 export const calculateBudgetSummary = (data: BudgetData): BudgetSummary => {
@@ -84,11 +147,21 @@ export const getCategoryDisplayName = (category: string): string => {
 };
 
 export const convertExpensesToBudgetCategories = (
-  expenses: CategoryExpense[],
+  monthlyTrendsPerCategory: TransactionsStats["monthlyTrendsPerCategory"],
   budgetSettings: BudgetSettings
 ): BudgetCategory[] => {
-  return expenses.map((expense, index) => {
-    const displayName = getCategoryDisplayName(expense.category);
+  const currentMonth = getMostRecentMonth(monthlyTrendsPerCategory);
+  const filteredCategories = filterCurrentMonthCategories(
+    monthlyTrendsPerCategory
+  );
+
+  return filteredCategories.map((categoryData, index) => {
+    const displayName = getCategoryDisplayName(categoryData.category);
+    const currentMonthSpending = getCurrentMonthSpending(
+      categoryData.category,
+      monthlyTrendsPerCategory,
+      currentMonth
+    );
     const limit =
       budgetSettings.categoryLimits[displayName] ||
       DEFAULT_CATEGORY_LIMITS[displayName] ||
@@ -97,26 +170,30 @@ export const convertExpensesToBudgetCategories = (
     return {
       id: `category-${index}`,
       name: displayName,
-      spent: expense.amount,
+      spent: currentMonthSpending,
       limit: limit,
-      color: expense.amount > limit ? "#ef4444" : "#10b981",
+      color: currentMonthSpending > limit ? "#ef4444" : "#10b981",
     };
   });
 };
 
 export const createBudgetDataFromStats = (
-  totalExpenses: number,
-  expensesByCategory: CategoryExpense[],
+  transactionStats: TransactionsStats,
   budgetSettings: BudgetSettings
 ): BudgetData => {
   const categories = convertExpensesToBudgetCategories(
-    expensesByCategory,
+    transactionStats.monthlyTrendsPerCategory,
     budgetSettings
+  );
+
+  const currentMonthTotalSpent = categories.reduce(
+    (total, category) => total + category.spent,
+    0
   );
 
   return {
     monthlyBudget: budgetSettings.monthlyBudget,
-    totalSpent: totalExpenses,
+    totalSpent: currentMonthTotalSpent,
     categories,
   };
 };

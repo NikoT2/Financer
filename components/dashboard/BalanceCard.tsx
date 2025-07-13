@@ -44,7 +44,7 @@ export const BalanceCard = ({
       >
         {amount}
       </Text>
-      <Text style={{ fontSize: 12, color: subtitleColor }}>{subtitle}</Text>
+      <Text style={{ fontSize: 11, color: subtitleColor }}>{subtitle}</Text>
     </View>
   );
 };
