@@ -26,11 +26,16 @@ export default function Budget() {
     updateBudgetSettings,
   } = useBudget();
 
+  const hasEnoughCategories =
+    budgetSummary?.categories && budgetSummary.categories.length >= 4;
+
   const {
     data: aiSuggestions,
     isLoading: isLoadingSuggestions,
     error: suggestionsError,
-  } = useAISpendingSuggestions();
+  } = useAISpendingSuggestions({
+    enabled: hasEnoughCategories,
+  });
 
   const [settingsModalVisible, setSettingsModalVisible] = useState(false);
 
@@ -93,11 +98,13 @@ export default function Budget() {
 
       <BudgetCategoriesSection budgetSummary={budgetSummary} />
 
-      <AISpendingSuggestionsSection
-        suggestions={aiSuggestions}
-        isLoading={isLoadingSuggestions}
-        error={suggestionsError}
-      />
+      {hasEnoughCategories && (
+        <AISpendingSuggestionsSection
+          suggestions={aiSuggestions}
+          isLoading={isLoadingSuggestions}
+          error={suggestionsError}
+        />
+      )}
 
       <BudgetSettingsModal
         visible={settingsModalVisible}

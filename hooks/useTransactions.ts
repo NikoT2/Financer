@@ -123,7 +123,7 @@ export const useTransactionCategories = () => {
   });
 };
 
-export const useAISpendingSuggestions = () => {
+export const useAISpendingSuggestions = (options?: { enabled?: boolean }) => {
   const { hasToken } = useAuthState();
 
   return useQuery<AISpendingSuggestions, Error>({
@@ -132,6 +132,6 @@ export const useAISpendingSuggestions = () => {
       return aiSuggestionsAPI.getSpendingSuggestions();
     },
     staleTime: 10 * 60 * 1000,
-    enabled: hasToken,
+    enabled: hasToken && (options?.enabled ?? true),
   });
 };
