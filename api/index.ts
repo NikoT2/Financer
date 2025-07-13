@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { QueryClient } from "@tanstack/react-query";
 import type { DocumentPickerAsset } from "expo-document-picker";
 import {
+  AISpendingSuggestions,
   AuthResponse,
   Category,
   CreateTransactionRequest,
@@ -203,6 +204,12 @@ export const transactionsAPI = {
   },
 };
 
+export const aiSuggestionsAPI = {
+  getSpendingSuggestions: async (): Promise<AISpendingSuggestions> => {
+    return await apiFetch<AISpendingSuggestions>("/suggestions/ai-spending");
+  },
+};
+
 export const queryKeys = {
   auth: {
     all: ["auth"] as const,
@@ -213,5 +220,9 @@ export const queryKeys = {
     lists: () => [...queryKeys.transactions.all, "list"] as const,
     details: () => [...queryKeys.transactions.all, "detail"] as const,
     detail: (id: string) => [...queryKeys.transactions.details(), id] as const,
+  },
+  aiSuggestions: {
+    all: ["aiSuggestions"] as const,
+    spending: () => [...queryKeys.aiSuggestions.all, "spending"] as const,
   },
 };

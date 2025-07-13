@@ -1,6 +1,7 @@
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
-import { queryKeys, transactionsAPI } from "../api";
+import { aiSuggestionsAPI, queryKeys, transactionsAPI } from "../api";
 import {
+  AISpendingSuggestions,
   CreateTransactionRequest,
   TransactionsResponse,
   TransactionsStats,
@@ -98,6 +99,19 @@ export const useTransactionCategories = () => {
   return useQuery({
     queryKey: ["transactions", "categories"],
     queryFn: () => transactionsAPI.getCategories(),
+    staleTime: 10 * 60 * 1000,
+    enabled: hasToken,
+  });
+};
+
+export const useAISpendingSuggestions = () => {
+  const { hasToken } = useAuthState();
+
+  return useQuery<AISpendingSuggestions, Error>({
+    queryKey: queryKeys.aiSuggestions.spending(),
+    queryFn: async () => {
+      return aiSuggestionsAPI.getSpendingSuggestions();
+    },
     staleTime: 10 * 60 * 1000,
     enabled: hasToken,
   });
