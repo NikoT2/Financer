@@ -32,7 +32,7 @@ export default function Transactions() {
     );
   }
 
-  const transactions = data?.pages.flatMap((page) => page.transactions) || [];
+  const transactions = data?.pages?.flatMap((page) => page.transactions) || [];
 
   return (
     <FlashList
