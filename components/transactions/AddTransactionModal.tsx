@@ -53,7 +53,7 @@ export function AddTransactionModal({
       description: "Manual Entry",
       category: String(categoryId),
       type,
-      date: "2025-04-30",
+      date: new Date().toISOString().split("T")[0],
       balance: 0,
     };
 
