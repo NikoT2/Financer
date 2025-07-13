@@ -31,10 +31,10 @@ export interface CategoryExpense {
 }
 
 export const DEFAULT_CATEGORY_LIMITS: Record<string, number> = {
-  "Food & Dining": 800,
-  Groceries: 600,
-  Restaurants: 400,
-  Transportation: 300,
+  "Food & Dining": 700,
+  Groceries: 500,
+  Restaurants: 300,
+  Transportation: 250,
   Entertainment: 200,
   Utilities: 150,
   Pharmacy: 100,

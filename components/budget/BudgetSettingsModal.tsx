@@ -54,6 +54,8 @@ export const BudgetSettingsModal: React.FC<BudgetSettingsModalProps> = ({
     }
 
     const validLimits: Record<string, number> = {};
+    let totalCategoryLimits = 0;
+
     for (const [category, limit] of Object.entries(categoryLimits)) {
       const numericLimit = parseFloat(limit);
       if (isNaN(numericLimit) || numericLimit < 0) {
@@ -61,6 +63,17 @@ export const BudgetSettingsModal: React.FC<BudgetSettingsModalProps> = ({
         return;
       }
       validLimits[category] = numericLimit;
+      totalCategoryLimits += numericLimit;
+    }
+
+    if (totalCategoryLimits > budgetAmount) {
+      const formattedTotal = totalCategoryLimits.toLocaleString();
+      const formattedBudget = budgetAmount.toLocaleString();
+      Alert.alert(
+        "Budget Exceeded",
+        `The sum of category limits (${formattedTotal}) exceeds your monthly budget (${formattedBudget}). Please adjust your category limits to stay within your budget.`
+      );
+      return;
     }
 
     setSaving(true);
@@ -83,6 +96,26 @@ export const BudgetSettingsModal: React.FC<BudgetSettingsModalProps> = ({
       ...prev,
       [category]: value,
     }));
+  };
+
+  const calculateBudgetSummary = () => {
+    const budgetAmount = parseFloat(monthlyBudget) || 0;
+    let totalAllocated = 0;
+
+    for (const limit of Object.values(categoryLimits)) {
+      const numericLimit = parseFloat(limit) || 0;
+      totalAllocated += numericLimit;
+    }
+
+    const remaining = budgetAmount - totalAllocated;
+    const isOverBudget = remaining < 0;
+
+    return {
+      budgetAmount,
+      totalAllocated,
+      remaining,
+      isOverBudget,
+    };
   };
 
   return (
@@ -183,6 +216,105 @@ export const BudgetSettingsModal: React.FC<BudgetSettingsModalProps> = ({
               >
                 Category Limits
               </Text>
+
+              {(() => {
+                const summary = calculateBudgetSummary();
+                return (
+                  <View
+                    style={{
+                      backgroundColor: "#ffffff",
+                      padding: 16,
+                      borderRadius: 12,
+                      marginBottom: 16,
+                      borderWidth: 1,
+                      borderColor: summary.isOverBudget ? "#ef4444" : "#e5e7eb",
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        marginBottom: 8,
+                      }}
+                    >
+                      <Text style={{ fontSize: 14, color: "#6b7280" }}>
+                        Monthly Budget:
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "600",
+                          color: "#1e293b",
+                        }}
+                      >
+                        {summary.budgetAmount.toLocaleString()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        marginBottom: 8,
+                      }}
+                    >
+                      <Text style={{ fontSize: 14, color: "#6b7280" }}>
+                        Total Allocated:
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "600",
+                          color: "#1e293b",
+                        }}
+                      >
+                        {summary.totalAllocated.toLocaleString()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Text style={{ fontSize: 14, color: "#6b7280" }}>
+                        Remaining:
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "600",
+                          color: summary.isOverBudget ? "#ef4444" : "#10b981",
+                        }}
+                      >
+                        {summary.remaining.toLocaleString()}
+                      </Text>
+                    </View>
+                    {summary.isOverBudget ? (
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#ef4444",
+                          marginTop: 8,
+                          fontStyle: "italic",
+                        }}
+                      >
+                        Category limits exceed monthly budget
+                      </Text>
+                    ) : (
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "#10b981",
+                          marginTop: 8,
+                          fontStyle: "italic",
+                        }}
+                      >
+                        Category limits are within monthly budget
+                      </Text>
+                    )}
+                  </View>
+                );
+              })()}
 
               {Object.entries(categoryLimits).map(([category, limit]) => (
                 <View
